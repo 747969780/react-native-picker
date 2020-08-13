@@ -1,5 +1,6 @@
 package com.beefe.picker;
 
+import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.app.Activity;
 import android.app.Dialog;
@@ -15,7 +16,6 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.os.Build;
-import android.content.DialogInterface;
 
 import com.beefe.picker.util.MIUIUtils;
 import com.beefe.picker.view.OnSelectedListener;
@@ -78,7 +78,7 @@ import static android.graphics.Color.argb;
  */
 
 public class PickerViewModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
-    
+
     private static final String FONTS = "fonts/";
     private static final String OTF = ".otf";
     private static final String TTF = ".ttf";
@@ -202,15 +202,6 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
             confirmTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    switch (curStatus) {
-                        case 0:
-                            returnData = pickerViewAlone.getSelectedData();
-                            break;
-                        case 1:
-                            returnData = pickerViewLinkage.getSelectedData();
-                            break;
-                    }
-                    commonEvent(EVENT_KEY_CONFIRM);
                     hide();
                 }
             });
@@ -390,6 +381,7 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
             int height = barViewHeight + pickerViewHeight;
             if (dialog == null) {
                 dialog = new Dialog(activity, R.style.Dialog_Full_Screen);
+                dialog.setContentView(view);
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
@@ -404,7 +396,6 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
                         commonEvent(EVENT_KEY_CANCEL);
                     }
                 });
-                dialog.setContentView(view);
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                 Window window = dialog.getWindow();
                 if (window != null) {
@@ -423,7 +414,7 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
                     layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
                     layoutParams.height = height;
                     layoutParams.gravity = Gravity.BOTTOM;
-                    window.setAttributes(layoutParams);   
+                    window.setAttributes(layoutParams);
                 }
             } else {
                 dialog.dismiss();
