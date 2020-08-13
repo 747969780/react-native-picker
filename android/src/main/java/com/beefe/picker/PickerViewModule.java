@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.os.Build;
+import android.content.DialogInterface;
 
 import com.beefe.picker.util.MIUIUtils;
 import com.beefe.picker.view.OnSelectedListener;
@@ -389,6 +390,20 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
             int height = barViewHeight + pickerViewHeight;
             if (dialog == null) {
                 dialog = new Dialog(activity, R.style.Dialog_Full_Screen);
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        switch (curStatus) {
+                            case 0:
+                                returnData = pickerViewAlone.getSelectedData();
+                                break;
+                            case 1:
+                                returnData = pickerViewLinkage.getSelectedData();
+                                break;
+                        }
+                        commonEvent(EVENT_KEY_CANCEL);
+                    }
+                });
                 dialog.setContentView(view);
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                 Window window = dialog.getWindow();
