@@ -202,6 +202,15 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
             confirmTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    switch (curStatus) {
+                        case 0:
+                            returnData = pickerViewAlone.getSelectedData();
+                            break;
+                        case 1:
+                            returnData = pickerViewLinkage.getSelectedData();
+                            break;
+                    }
+                    commonEvent(EVENT_KEY_CONFIRM);
                     hide();
                 }
             });
@@ -229,15 +238,6 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
             cancelTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    switch (curStatus) {
-                        case 0:
-                            returnData = pickerViewAlone.getSelectedData();
-                            break;
-                        case 1:
-                            returnData = pickerViewLinkage.getSelectedData();
-                            break;
-                    }
-                    commonEvent(EVENT_KEY_CANCEL);
                     hide();
                 }
             });
